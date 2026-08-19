@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For You 💌</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        overflow: hidden;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-family: "Trebuchet MS", sans-serif;
+
+        background:
+            radial-gradient(circle at 20% 20%, #fff0f6, transparent 30%),
+            radial-gradient(circle at 80% 80%, #ffd6e7, transparent 35%),
+            linear-gradient(135deg, #ffafbd, #ffc3a0);
+
+        color: #6b3048;
+    }
+
+
+    /* FLOATING HEARTS */
+
+    .bg-heart {
+        position: fixed;
+        bottom: -40px;
+        pointer-events: none;
+        opacity: 0.7;
+
+        animation: float 7s linear forwards;
+    }
+
+    @keyframes float {
+
+        from {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0;
+        }
+
+        15% {
+            opacity: 0.8;
+        }
+
+        to {
+            transform: translateY(-110vh) rotate(360deg);
+            opacity: 0;
+        }
+
+    }
+
+
+    /* MAIN CARD */
+
+    .card {
+        width: min(92%, 520px);
+        min-height: 500px;
+
+        padding: 45px 30px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+
+        background: rgba(255,255,255,0.72);
+
+        backdrop-filter: blur(18px);
+
+        border: 2px solid rgba(255,255,255,0.8);
+
+        border-radius: 35px;
+
+        box-shadow:
+            0 25px 70px rgba(120,40,70,0.25),
+            inset 0 0 30px rgba(255,255,255,0.5);
+
+        position: relative;
+        z-index: 5;
+
+        animation: appear 1s ease;
+    }
+
+
+    @keyframes appear {
+
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+    }
+
+
+    .screen {
+        width: 100%;
+    }
+
+
+    .hidden {
+        display: none;
+    }
+
+
+    /* ENVELOPE */
+
+    .envelope {
+        font-size: 90px;
+        cursor: pointer;
+
+        animation: bounce 1.5s infinite;
+    }
+
+
+    @keyframes bounce {
+
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-12px);
+        }
+
+    }
+
+
+    .open-text {
+        font-size: 17px;
+        margin-top: 15px;
+        opacity: 0.7;
+    }
+
+
+    /* TEXT */
+
+    h1 {
+        font-size: clamp(27px, 7vw, 38px);
+        margin: 15px 0;
+    }
+
+
+    p {
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+
+    .question {
+        margin: 30px 0;
+
+        font-size: clamp(23px, 6vw, 30px);
+
+        font-weight: bold;
+
+        color: #c43d6b;
+
+        text-shadow:
+            0 2px 8px rgba(255,100,150,0.2);
+    }
+
+
+    .pleading {
+        font-size: 34px;
+    }
+
+
+    /* BUTTONS */
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        gap: 18px;
+
+        margin-top: 25px;
+    }
+
+
+    button {
+        border: none;
+
+        border-radius: 50px;
+
+        padding: 14px 27px;
+
+        font-family: inherit;
+
+        font-size: 17px;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.25s,
+            box-shadow 0.25s;
+    }
+
+
+    /* YES BUTTON */
+
+    #yes {
+        color: white;
+
+        background:
+            linear-gradient(
+                135deg,
+                #ff4f81,
+                #ff719c
+            );
+
+        box-shadow:
+            0 8px 20px rgba(255,79,129,0.35);
+
+        animation: yesPulse 2s infinite;
+    }
+
+
+    @keyframes yesPulse {
+
+        0%, 100% {
+            box-shadow:
+                0 8px 20px rgba(255,79,129,0.3);
+        }
+
+        50% {
+            box-shadow:
+                0 8px 35px rgba(255,79,129,0.7);
+        }
+
+    }
+
+
+    #yes:hover {
+        transform: scale(1.08);
+    }
+
+
+    /* NO BUTTON */
+
+    #no {
+        color: #666;
+
+        background: #f1eeee;
+    }
+
+
+    #no:hover {
+        transform: scale(0.95);
+    }
+
+
+    .tiny {
+        margin-top: 25px;
+
+        font-size: 13px;
+
+        opacity: 0.5;
+    }
+
+
+    /* YES SCREEN */
+
+    .yay {
+        font-size: 75px;
+
+        animation:
+            yay 0.8s infinite alternate;
+    }
+
+
+    @keyframes yay {
+
+        from {
+            transform:
+                scale(1)
+                rotate(-5deg);
+        }
+
+        to {
+            transform:
+                scale(1.15)
+                rotate(5deg);
+        }
+
+    }
+
+
+    .celebrate-title {
+        color: #ff3974;
+    }
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- MAIN CARD -->
+
+<div class="card">
+
+
+    <!-- INTRO SCREEN -->
+
+    <div
+        class="screen"
+        id="intro"
+    >
+
+        <div
+            class="envelope"
+            onclick="openLetter()"
+        >
+            💌
+        </div>
+
+
+        <h1>
+            pssst... khaaa 👀
+        </h1>
+
+
+        <p>
+            I have something very important
+            to ask you...
+        </p>
+
+
+        <p class="open-text">
+            <b>tap the letter</b> 🥺
+        </p>
+
+    </div>
+
+
+
+    <!-- QUESTION SCREEN -->
+
+    <div
+        class="screen hidden"
+        id="question"
+    >
+
+        <div style="font-size:65px;">
+            🥺💗
+        </div>
+
+
+        <h1>
+            okay listen...
+        </h1>
+
+
+        <p>
+            Don't laugh at me okay 😭
+        </p>
+
+
+        <div class="question">
+
+            be my teerak for a long long time
+            naa khaaa
+
+            <span class="pleading">
+                🥺👉👈
+            </span>
+
+            !!?
+
+        </div>
+
+
+        <div class="buttons">
+
+
+            <button
+                id="yes"
+                onclick="sayYes()"
+            >
+                YESSS 💗
+            </button>
+
+
+            <button
+                id="no"
+                onclick="sayNo()"
+            >
+                NO 😭
+            </button>
+
+
+        </div>
+
+
+        <div class="tiny">
+            choose carefully khaaa 👀
+        </div>
+
+    </div>
+
+
+
+    <!-- YES SCREEN -->
+
+    <div
+        class="screen hidden"
+        id="yesScreen"
+    >
+
+        <div class="yay">
+            💖
+        </div>
+
+
+        <h1 class="celebrate-title">
+            YAYYYYYYYYY 😭💗
+        </h1>
+
+
+        <p>
+            I knew you would say yes khaaa 😭
+        </p>
+
+
+        <p>
+            Now you're officially my teerak
+            for a <b>LONG LONG TIME</b>. 🫂💗
+        </p>
+
+
+        <p>
+            No take-backs. 😌👉👈
+        </p>
+
+
+        <div style="font-size:45px;">
+            🫂 💐 💗 ✨ 🥺 ✨ 💗 💐 🫂
+        </div>
+
+    </div>
+
+
+
+    <!-- NO SCREEN -->
+
+    <div
+        class="screen hidden"
+        id="noScreen"
+    >
+
+        <div style="font-size:70px;">
+            🥺
+        </div>
+
+
+        <h1>
+            oh...
+        </h1>
+
+
+        <p>
+            that's okay khaaa. ❤️
+        </p>
+
+
+        <p>
+            I just wanted you to know that
+            you're really special to me.
+        </p>
+
+
+        <button onclick="goBack()">
+            okay okay 🥺
+        </button>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* OPEN THE LETTER */
+
+function openLetter() {
+
+    document
+        .getElementById("intro")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("question")
+        .classList
+        .remove("hidden");
+
+
+    createHearts(10);
+
+}
+
+
+
+/* NO BUTTON */
+
+let noCount = 0;
+
+
+const noMessages = [
+
+    "NO 😭",
+
+    "don't do this naaa 😭",
+
+    "u dont get the freedom to choose this option 😼",
+
+    "just say yess already 😘"
+
+];
+
+
+function sayNo() {
+
+    noCount++;
+
+
+    const button =
+        document.getElementById("no");
+
+
+    const yes =
+        document.getElementById("yes");
+
+
+    if (noCount <= 3) {
+
+        button.textContent =
+            noMessages[noCount];
+
+
+        yes.style.transform =
+            `scale(${1 + noCount * 0.08})`;
+
+
+        createHearts(4);
+
+    }
+
+    else {
+
+        document
+            .getElementById("question")
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById("noScreen")
+            .classList
+            .remove("hidden");
+
+    }
+
+}
+
+
+
+/* YES BUTTON */
+
+function sayYes() {
+
+    document
+        .getElementById("question")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("yesScreen")
+        .classList
+        .remove("hidden");
+
+
+    createHearts(50);
+
+}
+
+
+
+/* GO BACK */
+
+function goBack() {
+
+    document
+        .getElementById("noScreen")
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById("question")
+        .classList
+        .remove("hidden");
+
+}
+
+
+
+/* CREATE FLOATING HEARTS */
+
+function createHearts(amount) {
+
+
+    const hearts = [
+
+        "💗",
+        "💖",
+        "💕",
+        "❤️",
+        "💘",
+        "✨",
+        "🌸"
+
+    ];
+
+
+    for (
+        let i = 0;
+        i < amount;
+        i++
+    ) {
+
+
+        setTimeout(() => {
+
+
+            const heart =
+                document.createElement("div");
+
+
+            heart.className =
+                "bg-heart";
+
+
+            heart.textContent =
+                hearts[
+                    Math.floor(
+                        Math.random()
+                        * hearts.length
+                    )
+                ];
+
+
+            heart.style.left =
+                Math.random() * 100 + "vw";
+
+
+            heart.style.fontSize =
+                (18 + Math.random() * 25)
+                + "px";
+
+
+            heart.style.animationDuration =
+                (4 + Math.random() * 4)
+                + "s";
+
+
+            document.body
+                .appendChild(heart);
+
+
+            setTimeout(() => {
+
+                heart.remove();
+
+            }, 8000);
+
+
+        }, i * 70);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
